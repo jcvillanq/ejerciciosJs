@@ -81,7 +81,19 @@
 
     20) Programa una función que valide que un texto sea un email válido, pe. miFuncion("jonmircha@gmail.com") devolverá verdadero. */
 
+    const validarNombre = (nombre ="") =>{
 
+      if(!nombre) return console.warn("No ingresas un nombre");
+
+      if(typeof nombre !== 'string') return console.error(`El valor${nombre} ingresado no es una cadena de texto`);
+
+      let expReg=/^[A-Za-z]+$/g.test(nombre);
+
+      return(expReg)
+      ? console.info(`"${nombre}", es un nombre valido`)
+      : console.warn(`"${nombre}", No es un nombre valido`);
+
+    }
     
   </script>
 </html>
