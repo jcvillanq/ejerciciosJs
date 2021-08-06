@@ -15,7 +15,33 @@
   <script>
     /*21) Programa una función que dado un array numérico devuelve otro array con los números elevados al cuadrado, pe. mi_funcion([1, 4, 5]) devolverá [1, 16, 25].
 
+  */
 
+    const devolverCuadrados = (arr = undefined) => {
+      if ((arr === undefined))
+        return console.warn("no has ingresado un arreglo ");
+
+      if (!(arr instanceof Array))
+        console.error("el valor que ingresaste no es un arreglo");
+
+      if (arr.length === 0) console.error("El arreglo esta vacio");
+
+      for (let num of arr) {
+        if (typeof num !== "number")
+          console.error(`El valor "${num}" no es un numero`);
+      }
+
+      const newArr = arr.map((elemento) => elemento * elemento);
+
+      return console.info(
+        `Arreglo original: ${arr}, \nArreglo elevado al cuadrado: ${newArr}`
+      );
+    };
+
+    devolverCuadrados();
+    devolverCuadrados([2,3,4]);
+
+    /*
 
 
 
