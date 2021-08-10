@@ -17,15 +17,15 @@
 27) Programa una clase llamada Pelicula.
 
 La clase recibirá un objeto al momento de instanciarse con los siguentes datos: id de la película en IMDB, titulo, director, año de estreno, país o países de origen, géneros y calificación en IMBD.
-  - Todos los datos del objeto son obligatorios.
-  - Valida que el id IMDB tenga 9 caracteres, los primeros 2 sean letras y los 
+  --Todos los datos del objeto son obligatorios.
+  ---> Valida que el id IMDB tenga 9 caracteres, los primeros 2 sean letras y los 
      7 restantes números.
-  - Valida que el título no rebase los 100 caracteres.
-  - Valida que el director no rebase los 50 caracteres.
-  - Valida que el año de estreno sea un número entero de 4 dígitos.
-  - Valida que el país o paises sea introducidos en forma de arreglo.
-  - Valida que los géneros sean introducidos en forma de arreglo.
-  - Valida que los géneros introducidos esten dentro de los géneros 
+--->Valida que el título no rebase los 100 caracteres.
+---> Valida que el director no rebase los 50 caracteres.
+---> Valida que el año de estreno sea un número entero de 4 dígitos.
+---> Valida que el país o paises sea introducidos en forma de arreglo.
+---> Valida que los géneros sean introducidos en forma de arreglo.
+---> Valida que los géneros introducidos esten dentro de los géneros 
      aceptados*.
   - Crea un método estático que devuelva los géneros aceptados*.
   - Valida que la calificación sea un número entre 0 y 10 pudiendo ser 
@@ -36,5 +36,143 @@ La clase recibirá un objeto al momento de instanciarse con los siguentes datos:
     de cada película.
 
 * Géneros Aceptados: Action, Adult, Adventure, Animation, Biography, Comedy, Crime, Documentary ,Drama, Family, Fantasy, Film Noir, Game-Show, History, Horror, Musical, Music, Mystery, News, Reality-TV, Romance, Sci-Fi, Short, Sport, Talk-Show, Thriller, War, Western. */
+
+    class Pelicula {
+      constructor({
+        id,
+        titulo,
+        director,
+        estreno,
+        pais,
+        generos,
+        calificacion,
+      }) {
+        this.id = id;
+        this.titulo = titulo;
+        this.director = director;
+        this.estreno = estreno;
+        this.pais = pais;
+        this.generos = generos;
+        this.calificacion = calificacion;
+
+        this.validarIMDB(id);
+        this.validarTitulo(titulo);
+        this.validarDirector(director);
+        this.validarAnyEstreno(estreno);
+        this.validarPais(pais);
+        this.validarGeneros(generos)
+      }
+
+      static get listaGeneros(){
+        return ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary" ,'Drama', 'Family', 'Fantasy', 'Film', 'Noir', 'GameShow', 'History', 'Horror', 'Musical', 'Music', 'Mystery', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western']
+      }
+      static generosAceptados(){
+        return console.info(`Los generos aceptados son: ${Pelicula.listaGeneros.join(", ")}`)
+      }
+
+
+
+      validarCadena(propiedad, valor) {
+        if (!valor) return console.warn(`${propiedad} "${valor}" esta vacio`);
+
+        if (typeof valor !== "string")
+          return console.error(
+            `${propiedad} "${valor}" ingresado, No es una cadena`
+          );
+
+        return true;
+      }
+
+      validarLongitudCadena(propiedad, valor, longitud) {
+        if (valor.length > longitud)
+          console.error(
+            `${propiedad} "${valor}" excede el numero de caracteres permitidos ${longitud}.`
+          );
+
+        return true;
+      }
+
+      validarNumero(propiedad, valor) {
+        if (!valor) return console.warn(`${propiedad} "${valor}" esta vacio`);
+
+        if (typeof valor !== "number")
+          console.error(`${propiedad} "${valor}" no es un numero`);
+
+        return true;
+      }
+      validarArreglo(propiedad, valor) {
+        if (valor === undefined)
+          return console.warn("no has ingresado un arreglo ");
+
+        if (!(valor instanceof Array))
+          console.error("el valor que ingresaste no es un arreglo");
+
+        if (valor.length === 0) console.error("El arreglo esta vacio");
+
+        for (let str of valor) {
+          if (typeof str !== "string")
+            console.error(`El valor "${str}" no es una cadena`);
+        }
+
+        return true;
+      }
+
+      validarIMDB(id) {
+        if (this.validarCadena("IMDB id", id)) {
+          if (!/^([a-z]){2}([0-9]){7}$/.test(id))
+            return console.error(
+              `IMDB id "${id}" no es valido al menos debe tener 9 caracteres, los 2 primeros letras minusculas, y los otros 7 restantes numeros`
+            );
+        }
+      }
+      validarTitulo(titulo) {
+        if (this.validarCadena("Titulo", titulo))
+          this.validarLongitudCadena("Titulo", titulo, 100);
+      }
+      validarDirector(director) {
+        if (this.validarCadena("Director", director))
+          this.validarLongitudCadena("Director", director, 50);
+      }
+
+      validarAnyEstreno(estreno) {
+        if (this.validarNumero("Any de estreno", estreno))
+          if (!(/^([0-9]){4}$/.test(estreno)))
+            return console.error(
+              `Any de estreno "${estreno}" No es valido debe ser un numero de 4 digitos`
+            );
+      }
+
+      validarPais(pais){
+        this.validarArreglo("Pais",pais);
+      }
+
+
+      validarGeneros(generos){
+        if (this.validarArreglo("Genero",generos)) {
+          for (let genero of generos) {
+           // console.log(genero, Pelicula.listaGeneros.includes(genero));
+           if (!(Pelicula.listaGeneros.includes(genero))) {
+             console.error(`Algun Genero(s) es(son) incorrectos "${generos.join(", ")}"`);
+             Pelicula.generosAceptados();
+             
+           }
+          }
+         
+            
+        };
+      }
+
+
+
+    }
+
+    const peli = new Pelicula({
+      id: "tt1234567",
+      titulo: "Titulo de la pelicula",
+      director: "Director de la pelicula",
+      estreno: 2009,
+      pais:(['bolivia']),
+      generos: ["Thriller","Comedy","romantico"]
+    });
   </script>
 </html>
