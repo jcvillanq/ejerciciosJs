@@ -27,10 +27,10 @@ La clase recibirá un objeto al momento de instanciarse con los siguentes datos:
 ---> Valida que los géneros sean introducidos en forma de arreglo.
 ---> Valida que los géneros introducidos esten dentro de los géneros 
      aceptados*.
-  - Crea un método estático que devuelva los géneros aceptados*.
-  - Valida que la calificación sea un número entre 0 y 10 pudiendo ser 
+---> Crea un método estático que devuelva los géneros aceptados*.
+---> Valida que la calificación sea un número entre 0 y 10 pudiendo ser 
     decimal de una posición.
-  - Crea un método que devuelva toda la ficha técnica de la película.
+--->  Crea un método que devuelva toda la ficha técnica de la película.
   - Apartir de un arreglo con la información de 3 películas genera 3 
     instancias de la clase de forma automatizada e imprime la ficha técnica 
     de cada película.
@@ -60,17 +60,48 @@ La clase recibirá un objeto al momento de instanciarse con los siguentes datos:
         this.validarDirector(director);
         this.validarAnyEstreno(estreno);
         this.validarPais(pais);
-        this.validarGeneros(generos)
+        this.validarGeneros(generos);
+        this.validaCalificacion(calificacion);
       }
 
-      static get listaGeneros(){
-        return ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary" ,'Drama', 'Family', 'Fantasy', 'Film', 'Noir', 'GameShow', 'History', 'Horror', 'Musical', 'Music', 'Mystery', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western']
+      static get listaGeneros() {
+        return [
+          "Action",
+          "Adult",
+          "Adventure",
+          "Animation",
+          "Biography",
+          "Comedy",
+          "Crime",
+          "Documentary",
+          "Drama",
+          "Family",
+          "Fantasy",
+          "Film",
+          "Noir",
+          "GameShow",
+          "History",
+          "Horror",
+          "Musical",
+          "Music",
+          "Mystery",
+          "News",
+          "Reality-TV",
+          "Romance",
+          "Sci-Fi",
+          "Short",
+          "Sport",
+          "Talk-Show",
+          "Thriller",
+          "War",
+          "Western",
+        ];
       }
-      static generosAceptados(){
-        return console.info(`Los generos aceptados son: ${Pelicula.listaGeneros.join(", ")}`)
+      static generosAceptados() {
+        return console.info(
+          `Los generos aceptados son: ${Pelicula.listaGeneros.join(", ")}`
+        );
       }
-
-
 
       validarCadena(propiedad, valor) {
         if (!valor) return console.warn(`${propiedad} "${valor}" esta vacio`);
@@ -136,43 +167,59 @@ La clase recibirá un objeto al momento de instanciarse con los siguentes datos:
 
       validarAnyEstreno(estreno) {
         if (this.validarNumero("Any de estreno", estreno))
-          if (!(/^([0-9]){4}$/.test(estreno)))
+          if (!/^([0-9]){4}$/.test(estreno))
             return console.error(
               `Any de estreno "${estreno}" No es valido debe ser un numero de 4 digitos`
             );
       }
 
-      validarPais(pais){
-        this.validarArreglo("Pais",pais);
+      validarPais(pais) {
+        this.validarArreglo("Pais", pais);
       }
 
-
-      validarGeneros(generos){
-        if (this.validarArreglo("Genero",generos)) {
+      validarGeneros(generos) {
+        if (this.validarArreglo("Genero", generos)) {
           for (let genero of generos) {
-           // console.log(genero, Pelicula.listaGeneros.includes(genero));
-           if (!(Pelicula.listaGeneros.includes(genero))) {
-             console.error(`Algun Genero(s) es(son) incorrectos "${generos.join(", ")}"`);
-             Pelicula.generosAceptados();
-             
-           }
+            // console.log(genero, Pelicula.listaGeneros.includes(genero));
+            if (!Pelicula.listaGeneros.includes(genero)) {
+              console.error(
+                `Algun Genero(s) es(son) incorrectos "${generos.join(", ")}"`
+              );
+              Pelicula.generosAceptados();
+            }
           }
-         
-            
-        };
+        }
+      }
+
+      validaCalificacion(calificacion) {
+        if (this.validarNumero("Calificacion", calificacion))
+          return (calificacion < 0 || calificacion>10)
+          ? console.error(`La calificacion tiene que tener un rango entre 0 y 10`)
+          : this.calificacion=calificacion.toFixed(1);
+      }
+      fichaTecnica(){
+        console.info(`Ficha tecnica:\nTitulo: "${this.titulo}"\nDirector:"${this.director}"\nAnyo:"${this.estreno}"\nPais:"${this.pais.join("-")}"\nGenero: "${this.generos.join(",")}"\nCalificacion: "${this.calificacion}"\nIMDB Id: "${this.id}"`);
       }
 
 
 
     }
 
+    
+
+    
+
     const peli = new Pelicula({
       id: "tt1234567",
       titulo: "Titulo de la pelicula",
       director: "Director de la pelicula",
       estreno: 2009,
-      pais:(['bolivia']),
-      generos: ["Thriller","Comedy","romantico"]
+      pais: ["bolivia"],
+      generos: ["Thriller", "Comedy"],
+      calificacion: 9.4
+
     });
+
+    peli.fichaTecnica();
   </script>
 </html>
